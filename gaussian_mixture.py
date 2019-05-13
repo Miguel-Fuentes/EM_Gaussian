@@ -11,8 +11,8 @@ with open(FILEPATH) as f:
 data = np.array(data)
 data = np.reshape(data, (data.shape[0],1))
 
-k = 3
-num_iters = 3
+k = 5
+num_iters = 5
 
 params = list(zip(
     list(np.random.uniform(low=np.min(data), high=np.max(data), size=k)), 
@@ -35,8 +35,8 @@ for _ in range(num_iters):
     n = np.sum(preds, axis=0) 
     weights = n / data.shape[0]
 
-    means = np.sum(preds * data, axis=0) / data.shape[0]
-    stdevs = np.sum(preds * (np.repeat(data, means.shape[0], axis=1) - means), axis=0) / data.shape[0]
+    means = np.sum(preds * data, axis=0) / n
+    stdevs = np.sum(preds * ((np.repeat(data, means.shape[0], axis=1) - means) ** 2), axis=0) / n
     params = list(zip(
         list(means),
         list(stdevs)
