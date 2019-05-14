@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.stats import norm
+from math import sqrt
 
 FILEPATH = 'em_data.txt'
 data = []
@@ -24,8 +25,8 @@ weights /= np.sum(weights)
 
 for _ in range(num_iters):
     probs = []
-    for mean, std in params:
-        probs.append(norm.pdf(data, loc=mean, scale=std))
+    for mean, var in params:
+        probs.append(norm.pdf(data, loc=mean, scale=sqrt(var)))
 
     probs = np.hstack(probs) * weights
     probs /= np.sum(probs, axis=1, keepdims=True)
