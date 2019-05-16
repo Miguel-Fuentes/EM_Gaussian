@@ -51,3 +51,21 @@ class gaussian_mix:
             if iters == num_iters and return_likelihood:
                 weighted_probs = np.sum(weights * probs, axis=1)
                 return np.sum(np.log(weighted_probs))
+            
+if __name__ == '__main__':
+    FILEPATH = 'em_data.txt'
+    data = []
+
+    with open(FILEPATH) as f:
+        for line in f:
+            data.append(float(line))
+
+    data = np.array(data)
+    data = np.reshape(data, (data.shape[0],1))
+
+    for k in [1, 3, 5]:
+        print(f'Mixture of {k} Gaussians')
+        model = gaussian_mix(k)
+        print('Log Likelihood: ', model.train(data, 200, return_likelihood=True))
+        for mean, var in model.params:
+            print(f'Mean: {mean}, Variance {var}')
